@@ -1,76 +1,59 @@
 import streamlit as st
 
-# Set up the app title and description
-st.title("Discover Your Signature Scent in *Stelo Vienas*")
-st.write("Follow the steps to reveal the unique scent that reflects your journey through *Stelo Vienas*.")
+# Character classes and their traits
+character_classes = {
+    "Alliance Swordsman": "Brave, Loyal, Honorable",
+    "Cleric": "Wise, Compassionate, Calm",
+    "Archer": "Precise, Agile, Focused",
+    "Tracker": "Stealthy, Intuitive, Resilient",
+    "Prelate's Chapter Swordsman": "Disciplined, Virtuous, Protector",
+    "Hordesman": "Fierce, Wild, Unpredictable",
+    "Fang Warrior (Solandrys)": "Loyal, Fierce, Tenacious",
+    "Iron Legion Veteran": "Resilient, Stoic, Battle-Hardened",
+    "Vontharian Legionnaire": "Strategic, Skilled, Traditional",
+    "Bandit": "Cunning, Resourceful, Bold",
+    "Champion Swordsman": "Masterful, Courageous, Determined"
+}
+
+# Scent families and notes
+scent_families = {
+    "Citrus": ["Lemon", "Bergamot", "Grapefruit", "Orange"],
+    "Floral": ["Jasmine", "Rose", "Lavender", "White Lily"],
+    "Woody": ["Cedar", "Sandalwood", "Pine", "Oak"],
+    "Spicy": ["Cinnamon", "Pepper", "Clove", "Nutmeg"],
+    "Herbal": ["Mint", "Thyme", "Basil", "Sage"],
+    "Earthy": ["Moss", "Patchouli", "Vetiver", "Earth"],
+    "Smoky": ["Tobacco", "Leather", "Burnt Wood", "Ash"]
+}
+
+# Function to generate a scent profile
+def generate_scent_profile(character_class, selected_notes):
+    class_traits = character_classes.get(character_class, "Unknown")
+    profile = f"**Character Class:** {character_class}\n\n**Traits:** {class_traits}\n\n**Scent Notes:** {', '.join(selected_notes)}"
+    return profile
+
+# Streamlit App
+st.title("Discover Your Signature Scent and Character Profile")
+st.write("Follow the steps to reveal a unique scent profile that reflects your character and personality.")
 
 # Step 1: Character Class Selection
 st.header("Step 1: Choose Your Character Class")
-character_class = st.selectbox(
-    "Which character class resonates with you the most?",
-    ("Mystic", "Scholar", "Warrior", "Adventurer")
-)
+character_class = st.selectbox("Select your character class:", list(character_classes.keys()))
 
-# Step 2: Aroma Selection Based on Character Class
-st.header("Step 2: Select Your Aromas")
-if character_class == "Mystic":
-    aroma = st.multiselect(
-        "Select up to two aromas that resonate with your spirit:",
-        ["Night Bloom", "Incense", "Herbal Mist"]
-    )
-elif character_class == "Scholar":
-    aroma = st.multiselect(
-        "Select up to two aromas that speak of knowledge:",
-        ["Leather", "Fresh Ink", "Sandalwood"]
-    )
-elif character_class == "Warrior":
-    aroma = st.multiselect(
-        "Choose up to two aromas that fuel your courage:",
-        ["Blood Orange", "Cedar", "Iron"]
-    )
-else:  # Adventurer
-    aroma = st.multiselect(
-        "Select up to two aromas that evoke adventure:",
-        ["Wild Mint", "Ocean Mist", "Pine Resin"]
-    )
+# Step 2: Select Scent Families and Notes
+st.header("Step 2: Choose Your Scent Notes")
+selected_notes = []
 
-# Step 3: Display Outcome
-if st.button("Reveal Your Signature Scent"):
-    if character_class == "Mystic" and set(aroma) == {"Night Bloom", "Incense"}:
-        st.subheader("Veil of Midnight")
-        st.write("A lingering scent of moonlit flowers and incense smoke, filling the air with whispers of secrets.")
-    elif character_class == "Mystic" and set(aroma) == {"Night Bloom", "Herbal Mist"}:
-        st.subheader("Twilight Grove")
-        st.write("The gentle fragrance of herbs under a starlit sky, with hints of mystical blooms.")
-    elif character_class == "Mystic" and set(aroma) == {"Incense", "Herbal Mist"}:
-        st.subheader("Sacred Hearth")
-        st.write("A blend of smoke and earth, evoking ancient rituals and hidden knowledge.")
-    elif character_class == "Scholar" and set(aroma) == {"Leather", "Fresh Ink"}:
-        st.subheader("The Quiet Archive")
-        st.write("The scent of wisdom bound in leather and fresh ink, conjuring a sense of discovery and thought.")
-    elif character_class == "Scholar" and set(aroma) == {"Leather", "Sandalwood"}:
-        st.subheader("Timeless Study")
-        st.write("A blend of warm sandalwood and worn leather, like a sanctuary of hidden knowledge.")
-    elif character_class == "Scholar" and set(aroma) == {"Fresh Ink", "Sandalwood"}:
-        st.subheader("Script of the Ages")
-        st.write("A fragrance as sharp and grounded as ink on parchment, softened by the warmth of sandalwood.")
-    elif character_class == "Warrior" and set(aroma) == {"Blood Orange", "Cedar"}:
-        st.subheader("Vanguard’s Charge")
-        st.write("The bright energy of citrus balanced with the earthy strength of cedar—a scent for those who lead.")
-    elif character_class == "Warrior" and set(aroma) == {"Blood Orange", "Iron"}:
-        st.subheader("Forge’s Edge")
-        st.write("A sharp, invigorating fragrance of metal and citrus, like the spark of a warrior’s blade.")
-    elif character_class == "Warrior" and set(aroma) == {"Cedar", "Iron"}:
-        st.subheader("Ironwood Resolve")
-        st.write("The grounded strength of cedar entwined with the metallic tang of iron, symbolizing resilience.")
-    elif character_class == "Adventurer" and set(aroma) == {"Wild Mint", "Ocean Mist"}:
-        st.subheader("Breeze of the Open")
-        st.write("A crisp blend of mint and sea air, evoking freedom and discovery.")
-    elif character_class == "Adventurer" and set(aroma) == {"Wild Mint", "Pine Resin"}:
-        st.subheader("Forest Wanderer")
-        st.write("A fragrance of fresh mint and pine, like a path through sunlit woods.")
-    elif character_class == "Adventurer" and set(aroma) == {"Ocean Mist", "Pine Resin"}:
-        st.subheader("Edge of the World")
-        st.write("The earthy tang of pine with the cool embrace of the ocean, a call to distant horizons.")
-    else:
-        st.write("Please select up to two aromas to reveal your signature scent.")
+# Allow the user to select up to 4 notes from different scent families
+for family, notes in scent_families.items():
+    if len(selected_notes) < 4:
+        selected_note = st.selectbox(f"Choose a note from the {family} family", notes)
+        if selected_note and selected_note not in selected_notes:
+            selected_notes.append(selected_note)
+
+# Display the final profile if the user has chosen between 1 and 4 notes
+if st.button("Reveal Your Signature Scent Profile") and selected_notes:
+    profile = generate_scent_profile(character_class, selected_notes)
+    st.markdown(profile)
+else:
+    st.write("Please select up to 4 unique scent notes to create your profile.")
